@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cocoaic · 個人入口</title>
+  <meta name="description" content="cocoaic 的個人入口網頁：作品、連結與聯絡方式。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <style>
+    :root {
+      --bg: #f6f4f0;
+      --card: #ffffff;
+      --text: #1f1d1a;
+      --muted: #6b665e;
+      --line: #e6e1d8;
+      --accent: #8a5a2b;
+      --accent-soft: #f1e6d9;
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #161412;
+        --card: #201d1a;
+        --text: #eeeae4;
+        --muted: #a39d93;
+        --line: #332f2a;
+        --accent: #d9a46c;
+        --accent-soft: #2e251c;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #161412;
+      --card: #201d1a;
+      --text: #eeeae4;
+      --muted: #a39d93;
+      --line: #332f2a;
+      --accent: #d9a46c;
+      --accent-soft: #2e251c;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 56px 16px 40px; }
+
+    .theme-toggle {
+      position: fixed; top: 16px; right: 16px;
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--line); background: var(--card); color: var(--text);
+      font-size: 18px; cursor: pointer; box-shadow: var(--shadow);
+    }
+
+    header { text-align: center; margin-bottom: 40px; }
+    .avatar {
+      width: 112px; height: 112px; border-radius: 50%;
+      object-fit: cover; border: 3px solid var(--card); box-shadow: var(--shadow);
+      background: var(--accent-soft);
+    }
+    h1 { font-size: 28px; margin: 16px 0 4px; letter-spacing: .02em; }
+    .tagline { color: var(--muted); margin: 0 0 16px; }
+    .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0; margin: 0; list-style: none; }
+    .tags li {
+      font-size: 13px; padding: 3px 10px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent);
+    }
+
+    section { margin-bottom: 36px; }
+    h2 {
+      font-size: 13px; text-transform: uppercase; letter-spacing: .12em;
+      color: var(--muted); margin: 0 0 12px; font-weight: 600;
+    }
+
+    .links { display: grid; gap: 12px; }
+    .link {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px; border-radius: 14px;
+      background: var(--card); border: 1px solid var(--line);
+      text-decoration: none; box-shadow: var(--shadow);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .link:hover, .link:focus-visible { transform: translateY(-2px); border-color: var(--accent); outline: none; }
+    .link .icon {
+      flex: 0 0 40px; height: 40px; border-radius: 10px;
+      display: grid; place-items: center; font-size: 20px;
+      background: var(--accent-soft);
+    }
+    .link .text { min-width: 0; flex: 1; }
+    .link .title { font-weight: 600; display: block; }
+    .link .desc { color: var(--muted); font-size: 14px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .link .arrow { color: var(--muted); }
+
+    .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .project { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .project .icon { flex: none; width: 40px; }
+    .project .desc { white-space: normal; }
+
+    .about {
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 16px 18px; box-shadow: var(--shadow); margin: 0;
+    }
+
+    footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 48px; }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" aria-label="切換深淺色">🌓</button>
+
+  <main class="wrap">
+    <header>
+      <img class="avatar" id="avatar" alt="頭像">
+      <h1 id="name"></h1>
+      <p class="tagline" id="tagline"></p>
+      <ul class="tags" id="tags"></ul>
+    </header>
+
+    <section>
+      <h2>關於我</h2>
+      <p class="about" id="about"></p>
+    </section>
+
+    <section>
+      <h2>連結</h2>
+      <div class="links" id="links"></div>
+    </section>
+
+    <section>
+      <h2>作品</h2>
+      <div class="projects" id="projects"></div>
+    </section>
+
+    <footer>© <span id="year"></span> <span id="footerName"></span> · Hosted on GitHub Pages</footer>
+  </main>
+
+  <script>
+    /* ===== 在這裡修改你的個人資料 ===== */
+    const PROFILE = {
+      githubUser: "cocoaic",           // 用來自動抓取 GitHub 頭像
+      name: "cocoaic",
+      tagline: "歡迎來到我的個人入口 ☕",
+      tags: ["開發者", "創作者", "持續學習中"],
+      about: "嗨！這裡是我的個人入口網頁，收錄我常用的平台、作品與聯絡方式。可以在 index.html 最下方的 PROFILE 區塊修改這段介紹。",
+      links: [
+        { icon: "🐙", title: "GitHub",    desc: "github.com/cocoaic",  url: "https://github.com/cocoaic" },
+        { icon: "✉️", title: "Email",     desc: "寄信給我",              url: "mailto:you@example.com" },
+        { icon: "📝", title: "部落格",     desc: "我的文章與筆記",         url: "#" },
+        { icon: "📷", title: "Instagram", desc: "生活紀錄",              url: "#" },
+      ],
+      projects: [
+        { icon: "🚀", title: "專案一", desc: "簡短描述這個專案在做什麼。", url: "#" },
+        { icon: "🎨", title: "專案二", desc: "簡短描述這個專案在做什麼。", url: "#" },
+        { icon: "🧪", title: "專案三", desc: "簡短描述這個專案在做什麼。", url: "#" },
+      ],
+    };
+    /* ================================== */
+
+    const $ = (id) => document.getElementById(id);
+    const el = (tag, cls, text) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    };
+
+    function card(item, extraClass) {
+      const a = el("a", "link" + (extraClass ? " " + extraClass : ""));
+      a.href = item.url;
+      if (/^https?:/.test(item.url)) { a.target = "_blank"; a.rel = "noopener"; }
+      a.append(el("span", "icon", item.icon));
+      const t = el("span", "text");
+      t.append(el("span", "title", item.title), el("span", "desc", item.desc));
+      a.append(t);
+      if (!extraClass) a.append(el("span", "arrow", "→"));
+      return a;
+    }
+
+    document.title = PROFILE.name + " · 個人入口";
+    $("avatar").src = "https://github.com/" + PROFILE.githubUser + ".png?size=240";
+    $("name").textContent = PROFILE.name;
+    $("footerName").textContent = PROFILE.name;
+    $("tagline").textContent = PROFILE.tagline;
+    $("about").textContent = PROFILE.about;
+    $("year").textContent = new Date().getFullYear();
+    PROFILE.tags.forEach((t) => $("tags").append(el("li", null, t)));
+    PROFILE.links.forEach((l) => $("links").append(card(l)));
+    PROFILE.projects.forEach((p) => $("projects").append(card(p, "project")));
+
+    // 深淺色切換（記住使用者選擇）
+    const root = document.documentElement;
+    try { const saved = localStorage.getItem("theme"); if (saved) root.dataset.theme = saved; } catch (e) {}
+    $("themeToggle").addEventListener("click", () => {
+      const isDark = root.dataset.theme
+        ? root.dataset.theme === "dark"
+        : matchMedia("(prefers-color-scheme: dark)").matches;
+      root.dataset.theme = isDark ? "light" : "dark";
+      try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+    });
+  </script>
+</body>
+</html>
